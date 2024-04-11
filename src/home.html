@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Xiangqi Game</title>
+    <link rel="stylesheet" type="text/css" href="../src/style/home.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="button-container">
+        <h1 class="Xiangqi">Xiangqi Game</h1>
+        <div class="button">
+          <button onclick="playWithComputer()">Play with Computer</button>
+          <button onclick="playTwoPlayers()">Play 2 Players</button>
+          <button onclick="joinTournament()">Join Tournament</button>
+          <button onclick="openSettings()">Settings</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function playWithComputer() {
+        window.location.href = "index.html";
+      }
+
+      function playTwoPlayers() {
+        window.location.href = "play_two_players.html";
+      }
+
+      function joinTournament() {
+        window.location.href = "join_tournament.html";
+      }
+
+      function openSettings() {
+        window.location.href = "settings.html";
+      }
+    </script>
+  </body>
+</html>
