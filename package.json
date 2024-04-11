@@ -1,0 +1,30 @@
+{
+  "name": "xiangqiboardjs",
+  "version": "1.0.0",
+  "description": "xiangqiboard.js is a JavaScript xiangqiboard component. It depends on [jQuery].",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "build": "standard src/*.js && node scripts/build.js",
+    "standard": "standard --fix src/*.js",
+    "website": "node scripts/website.js",
+    "sass": "node-sass --watch src/style/main.scss src/style/main.css"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "jquery": "^3.7.1",
+    "node-sass": "^9.0.0"
+  },
+  "devDependencies": {
+    "code-prettify": "^0.1.0",
+    "csso": "^4.0.3",
+    "fs-plus": "^3.1.1",
+    "kidif": "^1.1.0",
+    "mustache": "^4.2.0",
+    "normalize.css": "^8.0.1",
+    "standard": "^14.3.3",
+    "terser": "^4.6.12"
+  }
+}
