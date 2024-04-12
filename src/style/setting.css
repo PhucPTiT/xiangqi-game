@@ -1,0 +1,59 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+
+}
+
+.module-inner {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    background-image: url('https://nguoisaigon.tv/wp-content/uploads/2021/12/tam-quoc-.jpeg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.side-bar {
+    
+}
+.content-panel {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+.form-horizontal {
+    width: 300px;
+    color: blanchedalmond;
+    gap: 12px;
+    display: flex;
+    flex-direction: column;
+}
+.title {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #4caf50;
+}
+input {
+    width: 90%;
+    padding: 10px;
+    border-radius: 8px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #4caf50;
+    margin-bottom: 10px;
+}
+.btn-primary {
+    margin-top: 12px;
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    background-color: #4caf50;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}

@@ -1,14 +1,25 @@
+html, body, main {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 .main {
   min-width: 1200px;
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: #f0f0f0; }
-  .main #myBoard {
-    width: '60%';
-    min-width: 800px;
-    height: auto; }
+  background-image: url('https://picture.dzogame.vn/TQC/ImgUp/7222013%C3%A5%C5%A0%E2%80%B0%C3%A9%E2%80%94%C5%93%C3%A5%C2%BC%C2%B5b%20copy.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.main #myBoard {
+  width: '60%';
+  min-width: 800px;
+  height: auto; }
 
 .d-none {
   display: none; }
@@ -19,3 +30,26 @@
 .highlight {
   background-color: rgba(232, 197, 100, 0.6);
   border-radius: 50%; }
+
+/* page solo */
+.main {
+  position: relative;
+  height: 100vh;
+}
+.game-info {
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  border-radius: 8px;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  font-size: 2em;
+  font-weight: bold;
+  text-align: center;
+  z-index: 1;
+}

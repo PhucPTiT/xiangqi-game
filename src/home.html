@@ -1,40 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Xiangqi Game</title>
-    <link rel="stylesheet" type="text/css" href="../src/style/home.css" />
-  </head>
-  <body>
-    <div class="container">
-      <div class="button-container">
-        <h1 class="Xiangqi">Xiangqi Game</h1>
-        <div class="button">
-          <button onclick="playWithComputer()">Play with Computer</button>
-          <button onclick="playTwoPlayers()">Play 2 Players</button>
-          <button onclick="joinTournament()">Join Tournament</button>
-          <button onclick="openSettings()">Settings</button>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Xiangqi Game</title>
+        <link rel="stylesheet" type="text/css" href="../src/style/home.css" />
+    </head>
+    <body>
+        <div class="container">
+            <div class="button-container">
+                <h1 class="Xiangqi">Xiangqi Game</h1>
+                <div class="button">
+                    <button onclick="playWithComputer()">
+                        Play with Computer
+                    </button>
+                    <button onclick="createRoom()">Tạo Phòng</button>
+                    <button onclick="togglePopup()">Tham Gia Phòng</button>
+                    <button onclick="joinTournament()">Join Tournament</button>
+                    <button onclick="openSettings()">Settings</button>
+                    <button onclick="">Đăng xuất</button>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
+        <div class="popup" id="joinRoomPopup">
+            <div class="popup-content">
+                <h2 style="color: white">Nhập mã phòng</h2>
+                <input
+                    type="text"
+                    id="popupRoomIdInput"
+                    placeholder="Nhập mã phòng"
+                />
+                <button class="minButton" onclick="joinRoomFromPopup()">
+                    Vào Phòng
+                </button>
+                <button class="exitButton" onclick="closePopup()">Đóng</button>
+            </div>
+        </div>
 
-    <script>
-      function playWithComputer() {
-        window.location.href = "index.html";
-      }
+        <script>
+            function playWithComputer() {
+                window.location.href = "index.html";
+            }
 
-      function playTwoPlayers() {
-        window.location.href = "play_two_players.html";
-      }
+            function createRoom() {
+                const data = { action: "createRoom" };
+                window.location.href = `../src/solo/solo.html?action=${data.action}`;
+            }
 
-      function joinTournament() {
-        window.location.href = "join_tournament.html";
-      }
+            function joinRoom() {
+                const data = { action: "joinRoom", roomId: "1" };
+                window.location.href = `../src/solo/solo.html?action=${data.action}&roomId=${data.roomId}`;
+            }
 
-      function openSettings() {
-        window.location.href = "settings.html";
-      }
-    </script>
-  </body>
+            function joinTournament() {
+                window.location.href = "join_tournament.html";
+            }
+
+            function openSettings() {
+                window.location.href = "../src/settings/setting.html";
+            }
+
+            function togglePopup() {
+                const popup = document.getElementById("joinRoomPopup");
+                popup.style.display =
+                    popup.style.display === "block" ? "none" : "block";
+            }
+            function validateInput() {
+                const roomId =
+                    document.getElementById("popupRoomIdInput").value;
+                if (!roomId) {
+                    alert("Vui lòng nhập mã phòng!");
+                    return false;
+                }
+                return true;
+            }
+
+            function joinRoomFromPopup() {
+                if (validateInput()) {
+                    const roomId =
+                        document.getElementById("popupRoomIdInput").value;
+                    const data = { action: "joinRoom", roomId };
+                    window.location.href = `../src/solo/solo.html?action=${data.action}&roomId=${data.roomId}`;
+                }
+            }
+
+            function closePopup() {
+                const popup = document.getElementById("joinRoomPopup");
+                popup.style.display = "none";
+            }
+        </script>
+    </body>
 </html>

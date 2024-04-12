@@ -35,12 +35,12 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 16px;
 }
 
 .button button {
   padding: 16px 32px;
   font-size: 24px;
-  margin: 10px;
   cursor: pointer;
   width: 280px;
   box-sizing: border-box;
@@ -53,4 +53,62 @@ body {
 
 .button button:hover {
   background-color: #45a049;
+}
+
+
+
+.popup {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 1000;
+}
+
+.popup-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 2px solid #00FF00;
+  background-color: rgba(0, 0, 0, 0.3);
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  animation: fadeIn 0.5s forwards;
+}
+.minButton{
+  padding: 4px 8px;
+  background-color: #4caf50;
+  color: white;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+}
+.exitButton{
+  padding: 4px 8px;
+  background-color: rgba(0, 0, 0, 0.3);;
+  color: white;
+  border-radius: 10px;
+  border: 1px solid #45a049;
+  outline: none;
+}
+
+
+#popupRoomIdInput {
+  padding: 4px 8px;
+}
+
+@keyframes fadeIn {
+  from {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.8);
+  }
+  to {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+  }
 }

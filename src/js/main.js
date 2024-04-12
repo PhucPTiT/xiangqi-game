@@ -70,7 +70,7 @@ function updateStatus() {
     }
 
     document.getElementById("game-status").innerHTML = status;
-    document.getElementById("header-status").innerHTML = ": " + status;
+    // document.getElementById("header-status").innerHTML = ": " + status;
 
     if (game.game_over()) {
         hetTran.play();

@@ -3,11 +3,15 @@ let game = new Xiangqi();
 
 const nuocCo = document.getElementById("nuoc-co");
 const hetTran = document.getElementById("het-tran");
+const gameCode = document.querySelector(".game-code");
+
+let Turn = null;
+let roomId = null;
+let myColor = null;
 
 const config = {
     boardTheme: "../../docs/img/xiangqiboards/test.png",
     pieceTheme: "../../docs/img/xiangqipieces/wikimedia/{piece}.svg",
-    orientation: "black",
     position: "start",
     showNotation: true,
     draggable: true,
@@ -18,8 +22,51 @@ const config = {
     onSnapEnd: onSnapEnd,
 };
 
-config.pieceTheme = "../../docs/img/xiangqipieces/graphic/{piece}.svg";
-board = Xiangqiboard("#myBoard", config);
+const socket = new WebSocket("ws://localhost:8081");
+
+socket.addEventListener("open", function (event) {
+    console.log("Connected to WebSocket server");
+    if (action === "createRoom") {
+        const data = { action: "createRoom" };
+        socket.send(JSON.stringify(data));
+    }
+    if (action === "joinRoom") {
+        const data = { action: "joinRoom", roomId: roomIdParam };
+        socket.send(JSON.stringify(data));
+    }
+});
+
+const urlParams = new URLSearchParams(window.location.search);
+const action = urlParams.get("action");
+const roomIdParam = urlParams.get("roomId");
+
+socket.addEventListener("message", function (event) {
+    console.log("Received message from server:", event.data);
+    const data = JSON.parse(event.data);
+    if (data.action === "roomCreated") {
+        roomId = data.roomId;
+        console.log(roomId);
+        Turn = "red";
+        config.orientation = Turn;
+        config.pieceTheme = "../../docs/img/xiangqipieces/graphic/{piece}.svg";
+        board = Xiangqiboard("#myBoard", config);
+        gameCode.innerHTML = `Mã trận đấu: ${roomId || roomIdParam}`;
+        updateStatus();
+    } else if (data.action === "roomJoined") {
+        Turn = "black";
+        config.orientation = Turn;
+        config.pieceTheme = "../../docs/img/xiangqipieces/graphic/{piece}.svg";
+        board = Xiangqiboard("#myBoard", config);
+        updateStatus();
+    } else if (data.action === "receiveFEN") {
+        game.load(data.fen);
+        board.position(data.fen);
+        updateStatus();
+    } else if (data.action === "error") {
+        alert(data.message);
+        window.location.href = "/src/home.html";
+    }
+});
 
 function updateStatus() {
     var status = "";
@@ -58,7 +105,7 @@ function updateStatus() {
     }
 
     document.getElementById("game-status").innerHTML = status;
-    document.getElementById("header-status").innerHTML = ": " + status;
+    // document.getElementById("header-status").innerHTML = ": " + status;
 
     if (game.game_over()) {
         hetTran.play();
@@ -81,23 +128,43 @@ function onDrop(source, target) {
     if (move === null) return "snapback";
     updateStatus();
 
+    let fen = game.fen();
+    console.log(
+        JSON.stringify({
+            action: "sendFEN",
+            roomId: roomIdParam || roomId,
+            fen,
+        })
+    );
+    socket.send(
+        JSON.stringify({
+            action: "sendFEN",
+            roomId: roomIdParam || roomId,
+            fen,
+        })
+    );
+
     // Call ws để load lượt đi đối thủ ở đây
 }
 
 function onMouseoverSquare(square, piece) {
-    // get list of possible moves for this square
-    let moves = game.moves({
-        square: square,
-        verbose: true,
-    });
+    // Kiểm tra xem có phải là lượt của quân đen không
+    // Lấy danh sách các nước đi có thể cho quân cờ hiện tại
+    let moves = game.moves({ square: square, verbose: true });
 
-    // exit if there are no moves available for this square
+    // Kiểm tra nếu không có nước đi nào
     if (moves.length === 0) return;
+    if (
+        (Turn === "red" && piece.search(/^r/) === -1) ||
+        (Turn === "black" && piece.search(/^b/) === -1)
+    ) {
+        return;
+    }
 
-    // highlight the square they moused over
+    // Tô màu ô hiện tại
     greySquare(square);
 
-    // highlight the possible squares for this piece
+    // Tô màu các ô có thể di chuyển tới
     for (let i = 0; i < moves.length; i++) {
         greySquare(moves[i].to);
     }
@@ -134,7 +201,9 @@ function onDragStart(source, piece, position, orientation) {
     if (
         game.in_checkmate() === true ||
         game.in_draw() === true ||
-        piece.search(/^r/) !== -1
+        (Turn === "black" && piece.search(/^b/) === -1) ||
+        (Turn === "red" && piece.search(/^r/) === -1)
+        // piece.search(/^b/) !== -1
     ) {
         return false;
     }
