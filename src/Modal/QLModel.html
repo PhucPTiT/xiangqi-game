@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quản lý Modal</title>
+    <!-- Link CSS của Bootstrap -->
+    <link
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <h2 class="mt-4 mb-3">Quản lý Modal</h2>
+      <button class="btn btn-primary mb-3" onclick="addModal()">Add</button>
+      <table class="table">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Name</th>
+            <th scope="col">FilePath</th>
+            <th scope="col">Depth</th>
+            <th scope="col">Active</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody id="modalTableBody"></tbody>
+      </table>
+    </div>
+
+    <script>
+      fetch("http://localhost:5000/api/Modals")
+        .then((response) => response.json())
+        .then((data) => fillModalTable(data))
+        .catch((error) => console.error("Error fetching modals:", error));
+
+      function fillModalTable(modals) {
+        console.log(modals);
+        var tableBody = document.getElementById("modalTableBody");
+        tableBody.innerHTML = ""; // Xóa hết dữ liệu cũ
+        modals.forEach(function (modal) {
+          var row = tableBody.insertRow();
+          row.insertCell(0).innerHTML = modal.id;
+          row.insertCell(1).innerHTML = modal.name;
+          row.insertCell(2).innerHTML = modal.filePath;
+          row.insertCell(3).innerHTML = modal.depth;
+          row.insertCell(4).innerHTML = modal.action ? "YES" : "NO";
+          var actionCell = row.insertCell(5);
+          // Thêm các nút action ở đây
+          var editButton = document.createElement("button");
+          editButton.innerHTML = "Edit";
+          editButton.classList.add("btn", "btn-primary", "mr-2");
+          editButton.onclick = function () {
+            editModal(modal.id);
+          };
+          actionCell.appendChild(editButton);
+
+          var deleteButton = document.createElement("button");
+          deleteButton.innerHTML = "Delete";
+          deleteButton.classList.add("btn", "btn-danger");
+          deleteButton.onclick = function () {
+            deleteModal(modal.id);
+          };
+          actionCell.appendChild(deleteButton);
+        });
+      }
+
+      function addModal() {
+        window.location.href = "addNewModal.html";
+      }
+
+      function editModal(id) {
+        window.location.href = "editModal.html?id=" + id;
+      }
+
+      function deleteModal(id) {
+        fetch(`http://localhost:5000/api/deleteModal/${id}`, {
+          method: "DELETE",
+        })
+          .then((response) => {
+            if (response.ok) {
+              alert("Modal deleted successfully!");
+              window.location.reload();
+            } else {
+              alert("Failed to delete modal!");
+            }
+          })
+          .catch((error) => {
+            console.error("Error deleting modal:", error);
+            alert("An error occurred while deleting modal!");
+          });
+      }
+    </script>
+
+    <!-- Link script của Bootstrap -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </body>
+</html>

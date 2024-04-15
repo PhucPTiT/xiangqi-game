@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add New Modal</title>
+    <!-- Link CSS của Bootstrap -->
+    <link
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <h2 class="mt-4 mb-3">Add New Modal</h2>
+
+      <!-- Form nhập thông tin cho modal mới -->
+      <form id="newModalForm">
+        <div class="form-group">
+          <label for="name">Name:</label>
+          <input type="text" class="form-control" id="name" name="name" />
+        </div>
+        <div class="form-group">
+          <label for="filePath">FilePath:</label>
+          <input
+            type="text"
+            class="form-control"
+            id="filePath"
+            name="filePath"
+          />
+        </div>
+        <div class="form-group">
+          <label for="depth">Depth:</label>
+          <input type="number" class="form-control" id="depth" name="depth" />
+        </div>
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="button" class="btn btn-secondary" onclick="cancel()">
+          Cancel
+        </button>
+      </form>
+    </div>
+
+    <!-- Link script của Bootstrap -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+      document
+        .getElementById("newModalForm")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+
+          var name = document.getElementById("name").value;
+          var filePath = document.getElementById("filePath").value;
+          var depth = document.getElementById("depth").value;
+
+          var modal = {
+            name: name,
+            filePath: filePath,
+            depth: parseInt(depth),
+            action: 0,
+          };
+
+          // Gửi dữ liệu đến API để thêm modal mới
+          fetch("http://localhost:5000/api/addNewModal", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(modal),
+          })
+            .then((response) => {
+              if (response.ok) {
+                alert("Modal added successfully!");
+                window.location.href = "QLModel.html";
+              } else {
+                alert("Failed to add modal!");
+              }
+            })
+            .catch((error) => {
+              console.error("Error adding modal:", error);
+              alert("An error occurred while adding modal!");
+            });
+        });
+
+      function cancel() {
+        window.location.href = "QLModel.html";
+      }
+    </script>
+  </body>
+</html>
