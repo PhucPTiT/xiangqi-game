@@ -20,9 +20,7 @@ wss.on("connection", (ws) => {
         if (data.action === "createRoom") {
             const roomId = roomCounter++;
             rooms[roomId] = { players: [ws], fen: null };
-            ws.send(
-                JSON.stringify({ action: "roomCreated", roomId, color: "red" })
-            );
+            ws.send(JSON.stringify({ action: "  ", roomId, color: "red" }));
         } else if (data.action === "joinRoom" && data.roomId) {
             if (!rooms[data.roomId]) {
                 console.error("Room not found");

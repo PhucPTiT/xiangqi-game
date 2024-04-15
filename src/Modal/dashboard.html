@@ -1,124 +1,158 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vertical Sidebar Dashboard</title>
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-    />
-    <style>
-      /* Tùy chỉnh sidebar */
-      .sidebar {
-        background-color: #343a40; /* Màu nền */
-        color: #ffffff; /* Màu chữ */
-        height: 100vh; /* Chiều cao */
-        padding-top: 30px; /* Khoảng cách phía trên */
-      }
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Vertical Sidebar Dashboard</title>
+        <link
+            rel="stylesheet"
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        />
+        <style>
+            /* Tùy chỉnh sidebar */
+            .sidebar {
+                background-color: #343a40; /* Màu nền */
+                color: #ffffff; /* Màu chữ */
+                height: 100vh; /* Chiều cao */
+                padding-top: 30px; /* Khoảng cách phía trên */
+            }
 
-      /* Tùy chỉnh các liên kết trong sidebar */
-      .nav-link {
-        color: #ffffff; /* Màu chữ cho liên kết */
-        font-size: 16px; /* Kích thước font chữ */
-        padding: 10px; /* Khoảng cách giữa các liên kết */
-      }
+            /* Tùy chỉnh các liên kết trong sidebar */
+            .nav-link {
+                color: #ffffff; /* Màu chữ cho liên kết */
+                font-size: 16px; /* Kích thước font chữ */
+                padding: 10px; /* Khoảng cách giữa các liên kết */
+            }
 
-      /* Hiệu ứng hover cho liên kết */
-      .nav-link:hover {
-        background-color: #495057; /* Màu nền khi di chuột vào */
-        border-radius: 5px; /* Bo tròn viền */
-      }
+            /* Hiệu ứng hover cho liên kết */
+            .nav-link:hover {
+                background-color: #495057; /* Màu nền khi di chuột vào */
+                border-radius: 5px; /* Bo tròn viền */
+            }
 
-      /* Hiệu ứng cho liên kết đang được chọn */
-      .nav-link.active {
-        font-weight: bold; /* In đậm cho liên kết đang được chọn */
-        background-color: #6c757d; /* Màu nền cho liên kết đang được chọn */
-      }
-      .q-none {
-        display: none;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="container-fluid">
-      <div class="row">
-        <!-- Sidebar -->
-        <nav class="col-md-3 col-lg-2 d-md-block sidebar">
-          <div class="sidebar-sticky">
-            <ul class="nav flex-column">
-              <li class="nav-item">
-                <a
-                  class="nav-link active"
-                  href="#"
-                  onclick="showSection('dashboard')"
-                  >Dashboard</a
-                >
-              </li>
-              <li class="nav-item">
-                <a
-                  class="nav-link"
-                  href="#"
-                  onclick="showSection('manage-players')"
-                  >Quản lý người chơi</a
-                >
-              </li>
-              <li class="nav-item">
-                <a
-                  class="nav-link"
-                  href="#"
-                  onclick="showSection('manage-modal')"
-                  >Quản lý modal</a
-                >
-              </li>
-            </ul>
-          </div>
-        </nav>
+            /* Hiệu ứng cho liên kết đang được chọn */
+            .nav-link.active {
+                font-weight: bold; /* In đậm cho liên kết đang được chọn */
+                background-color: #6c757d; /* Màu nền cho liên kết đang được chọn */
+            }
+            .q-none {
+                display: none;
+            }
+            .h-full {
+                height: 100% !important;
+            }
+            .wrap-btn {
+                display: flex;
+                justify-content: center;
+                margin-bottom: 40px;
+                align-items: center;
+            }
+            .logout-btn {
+                padding: 10px 20px;
+                width: 200px;
+                background-color: #86dc35;
+                color: #ffffff;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container-fluid">
+            <div class="row">
+                <!-- Sidebar -->
+                <nav class="col-md-3 col-lg-2 d-md-block sidebar">
+                    <div
+                        class="sidebar-sticky"
+                        style="
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: space-between;
+                            height: 100%;
+                        "
+                    >
+                        <div>
+                            <h1>DASHBOARD</h1>
+                            <ul class="nav flex-column">
+                                <li class="nav-item">
+                                    <a
+                                        class="nav-link"
+                                        href="#"
+                                        onclick="showSection('manage-players')"
+                                        >Quản lý người chơi</a
+                                    >
+                                </li>
+                                <li class="nav-item">
+                                    <a
+                                        class="nav-link"
+                                        href="#"
+                                        onclick="showSection('manage-modal')"
+                                        >Quản lý modal</a
+                                    >
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="wrap-btn">
+                            <button onclick="logOut()" class="logout-btn">
+                                Log out
+                            </button>
+                        </div>
+                    </div>
+                </nav>
 
-        <!-- Main content -->
-        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-          <div class="py-4">
-            <!-- Dash Board -->
-            <section id="dashboard" class="mb-4">
-              <h2>Xiangqi</h2>
-              <p>Dashboard</p>
-            </section>
-            <!-- Quản lý người chơi -->
-            <section class="q-none" id="manage-players" class="mb-4">
-              <h2>Quản lý người chơi</h2>
-              <!-- Content for managing players goes here -->
-              <p>Demo content for managing players...</p>
-            </section>
+                <!-- Main content -->
+                <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+                    <div class="py-4 h-full">
+                        <!-- Quản lý người chơi -->
+                        <section
+                            class="h-full"
+                            id="manage-players"
+                            class="mb-4"
+                        >
+                            <iframe
+                                src="../Modal/qlUser.html"
+                                width="100%"
+                                height="500px"
+                                frameborder="0"
+                                class="h-full"
+                            ></iframe>
+                        </section>
 
-            <!-- Quản lý modal -->
-            <section class="q-none" id="manage-modal" class="mb-4">
-              <iframe
-                src="../Modal/QLModel.html"
-                width="100%"
-                height="500px"
-                frameborder="0"
-              ></iframe>
-            </section>
-          </div>
-        </main>
-      </div>
-    </div>
+                        <!-- Quản lý modal -->
+                        <section class="q-none" id="manage-modal" class="mb-4">
+                            <iframe
+                                src="../Modal/QLModel.html"
+                                width="100%"
+                                height="500px"
+                                frameborder="0"
+                            ></iframe>
+                        </section>
+                    </div>
+                </main>
+            </div>
+        </div>
+        <script src="../js/checkAdminLogin.js"></script>
+        <script>
+            function showSection(sectionId) {
+                var sections = document.querySelectorAll("section");
+                sections.forEach(function (section) {
+                    if (section.id === sectionId) {
+                        section.classList.remove("q-none");
+                    } else {
+                        section.classList.add("q-none");
+                    }
+                });
+            }
 
-    <script>
-      function showSection(sectionId) {
-        var sections = document.querySelectorAll("section");
-        sections.forEach(function (section) {
-          if (section.id === sectionId) {
-            section.classList.remove("q-none");
-          } else {
-            section.classList.add("q-none");
-          }
-        });
-      }
-    </script>
+            function logOut() {
+                localStorage.removeItem("admin");
+                window.location.href = "/src/login.html";
+            }
+        </script>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  </body>
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    </body>
 </html>
