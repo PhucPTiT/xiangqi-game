@@ -49,6 +49,7 @@ function updateStatus() {
     // draw?
     else if (game.in_draw()) {
         status = "Hòa";
+        onSaveMatch("draw");
     }
 
     // game still on
@@ -73,9 +74,14 @@ function updateStatus() {
     // document.getElementById("header-status").innerHTML = ": " + status;
 
     if (game.game_over()) {
+        if (moveColor === "Đỏ") {
+            onSaveMatch("AI win");
+        } else {
+            onSaveMatch("user win");
+        }
         hetTran.play();
-        document.getElementById("header-status").innerHTML =
-            ": " + status + " - Hết trận";
+        // document.getElementById("header-status").innerHTML =
+        //     ": " + status + " - Hết trận";
         document.getElementById("game-over").classList.remove("d-none");
         document.getElementById("game-over").classList.add("d-inline-block");
     }
@@ -243,7 +249,7 @@ var positionCount;
 function getBestMove(game) {
     updateStatus();
     positionCount = 0;
-    var depth = 4;
+    var depth = depthSearch;
     var bestMove = minimaxRoot(depth, game, true);
     return bestMove;
 }
@@ -373,7 +379,6 @@ function removeGreySquares() {
 function greySquare(square) {
     // Lấy ô cần tô màu bằng cách sử dụng phương thức querySelector
     const squareElement = document.querySelector(`#myBoard .square-${square}`);
-    console.log(squareElement);
     // Thêm lớp 'highlight' vào ô
     squareElement.classList.add("highlight");
 }
@@ -393,3 +398,90 @@ function onDragStart(source, piece, position, orientation) {
         return false;
     }
 }
+var depthSearch = 1;
+var modalID = 1;
+//lấy thông tin các modal được lưu trong database
+const level = new URLSearchParams(window.location.search).get("difficulty");
+async function getModal() {
+    try {
+        const response = await fetch(
+            `http://localhost:5000/api/modal/${level}`
+        );
+
+        // Kiểm tra nếu phản hồi không thành công
+        if (!response.ok) {
+            throw new Error("Network response was not ok");
+        }
+
+        const modals = await response.json();
+        depthSearch = modals.depth;
+        modalID = modals.id;
+
+        // Kiểm tra nếu phản hồi trống hoặc không hợp lệ
+        if (!modals) {
+            throw new Error("JSON data is empty or invalid");
+        }
+    } catch (error) {
+        console.error("Error fetching data:", error.message);
+    }
+}
+
+getModal();
+
+// hiển thị thông tin người chơi lên thẻ
+
+const playerName = document.querySelector(".player-name");
+const playerNickname = document.querySelector(".player-nickname");
+const playerAddress = document.querySelector(".player-info");
+const playerWin = document.querySelector(".player-win");
+
+const user = JSON.parse(localStorage.getItem("currentUser"));
+
+const regetUser = async () => {
+    const response = await fetch(`http://localhost:5000/user/${user.id}`);
+    const data = await response.json();
+    localStorage.setItem("currentUser", JSON.stringify(data));
+};
+regetUser();
+
+playerName.innerHTML = "Tài khoản: " + user.username;
+playerNickname.innerHTML = `Biệt danh: ${user.nickname || "Chưa cập nhật"}`;
+playerAddress.innerHTML = `Email: ${user.email || "Chưa cập nhật"}`;
+playerWin.innerHTML = `Số trận thắng: ${user.winMatchs || 0}`;
+
+//lưu kết quả trận đấu
+const onSaveMatch = async (result) => {
+    console.log("vao");
+    const matchData = {
+        userId: user.id,
+        modalId: modalID,
+        result: result,
+    };
+
+    const response = await fetch("http://localhost:5000/match", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(matchData),
+    });
+
+    if (response.ok) {
+        const data = await response.json();
+        console.log("Match created:", data);
+    } else {
+        console.error("Error creating match:", response.statusText);
+    }
+};
+
+// tổ hợp button
+const quit = document.getElementById("home");
+quit.addEventListener("click", () => {
+    window.location.href = "/src/home.html";
+});
+
+const replay = document.getElementById("replay");
+replay.addEventListener("click", () => {
+    board.start();
+    game.reset();
+});

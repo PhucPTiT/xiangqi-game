@@ -53,3 +53,44 @@ html, body, main {
   text-align: center;
   z-index: 1;
 }
+
+.player-card {
+    position: absolute;
+    right: 30px;
+    bottom: 30px;
+    background-color: rgb(240, 126, 126);
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 16px;
+    width: 300px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-bottom: 16px;
+}
+
+.player-name {
+    font-size: 24px;
+    margin-bottom: 8px;
+}
+
+.player-info {
+    margin-bottom: 4px;
+}
+
+#home, #replay {
+  background-color: rgba(184, 88, 33, 0.5);
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  color: rgb(212, 203, 203);
+  font-weight: 400;
+  font-size: 20px;
+}

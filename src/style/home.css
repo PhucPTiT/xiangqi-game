@@ -90,16 +90,40 @@ body {
 }
 .exitButton{
   padding: 4px 8px;
-  background-color: rgba(0, 0, 0, 0.3);;
+  background-color: rgba(0, 0, 0, 0.3);
   color: white;
   border-radius: 10px;
   border: 1px solid #45a049;
   outline: none;
+  cursor: pointer;
 }
 
 
 #popupRoomIdInput {
   padding: 4px 8px;
+}
+
+.difficultyButton {
+  margin: 10px;
+  padding: 10px 20px;
+  background-color: rgba(0, 0, 0, 0.3);
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  border-radius: 6px;
+}
+
+.difficultyButton:hover {
+  background-color: #45a049;
+}
+.easyButton {
+  border: 2px solid #0056b3;
+}
+.mediumButton {
+  border: 2px solid #b4ec18;
+}
+.hardButton {
+  border: 2px solid #ff0000;
 }
 
 @keyframes fadeIn {

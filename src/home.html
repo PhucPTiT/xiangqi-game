@@ -18,8 +18,34 @@
                     <button onclick="togglePopup()">Tham Gia Phòng</button>
                     <button onclick="joinTournament()">Join Tournament</button>
                     <button onclick="openSettings()">Settings</button>
-                    <button onclick="">Đăng xuất</button>
+                    <button onclick="logOut()">Đăng xuất</button>
                 </div>
+            </div>
+        </div>
+        <div class="popup" id="difficultyPopup">
+            <div class="popup-content">
+                <h2 style="color: white">Chọn Độ Khó</h2>
+                <button
+                    class="easyButton difficultyButton"
+                    onclick="startGame('easy')"
+                >
+                    Dễ
+                </button>
+                <button
+                    class="mediumButton difficultyButton"
+                    onclick="startGame('medium')"
+                >
+                    Trung Bình
+                </button>
+                <button
+                    class="hardButton difficultyButton"
+                    onclick="startGame('hard')"
+                >
+                    Khó
+                </button>
+                <button class="exitButton" onclick="closeDifficultyPopup()">
+                    Đóng
+                </button>
             </div>
         </div>
         <div class="popup" id="joinRoomPopup">
@@ -36,12 +62,8 @@
                 <button class="exitButton" onclick="closePopup()">Đóng</button>
             </div>
         </div>
-
+        <script src="./js/checkLogin.js"></script>
         <script>
-            function playWithComputer() {
-                window.location.href = "index.html";
-            }
-
             function createRoom() {
                 const data = { action: "createRoom" };
                 window.location.href = `../src/solo/solo.html?action=${data.action}`;
@@ -87,6 +109,29 @@
             function closePopup() {
                 const popup = document.getElementById("joinRoomPopup");
                 popup.style.display = "none";
+            }
+
+            function logOut() {
+                localStorage.removeItem("currentUser");
+                window.location.href = "../src/login.html";
+            }
+
+            // chọn độ khó cho game
+            function playWithComputer() {
+                const difficultyPopup =
+                    document.getElementById("difficultyPopup");
+                difficultyPopup.style.display = "block";
+            }
+
+            function startGame(difficulty) {
+                closeDifficultyPopup();
+                window.location.href = `index.html?difficulty=${difficulty}`;
+            }
+
+            function closeDifficultyPopup() {
+                const difficultyPopup =
+                    document.getElementById("difficultyPopup");
+                difficultyPopup.style.display = "none";
             }
         </script>
     </body>
