@@ -64,6 +64,7 @@ wss.on("connection", (ws) => {
                   fen: data.fen,
                 })
               );
+
             } else {
               console.error("Opponent not found");
               ws.send(
